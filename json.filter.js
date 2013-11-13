@@ -21,7 +21,15 @@
             /*****************************/
 
 			jsonFilterMain = function(config, json){
-				
+
+                console.log("in jsonFilterMain");
+                console.log( "type of json " + $.type(json) );
+                $.each(json, function(key, val){
+                    console.log(JSON.stringify(json[key]) );
+
+                });
+
+
 			}
 
             checkConfigs = function(){
@@ -45,6 +53,13 @@
                     response = -1;
                 }
                 return response;
+            }
+
+            validateJSON = function(){
+                if(json && $.type(json) === "array"){
+                    console.log("json is an array");
+                    json = $.parseJSON(json);
+                }
             }
 
 
@@ -72,15 +87,17 @@
             var configCheckResult = checkConfigs();
 
             if(configCheckResult === 1) {
+                validateJSON();
 			    resultObject =  jsonFilterMain(config, json);
             } else if (configCheckResult === 0) {
                 ret.result  = json;
                 ret.err     = "";
             }else {
-                ret.result  = null;
+                ret.result  = {};
                 ret.err     = "ERROR: Incorrect Configurations > check your property";
             }
 
+            console.log("just before return : " + ret.result);
 			return ret.result;
 		}
 	//});

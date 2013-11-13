@@ -17,30 +17,35 @@
 			jsonDataRequest.done( function(data){
 				alert("DONE: " + data.length + " ---- "  + JSON.stringify(data));
 
-
+                var json = data;
                 var html = "<ol>";
-                $.each(data, function(key, val){
-                    html += "<li><pre>" + JSON.stringify(data[key])+ "</pre></li>";
+                $.each(json, function(key, val){
+                    html += "<li><pre>" + JSON.stringify(json[key])+ "</pre></li>";
                 });
                 html += "</ol>";
 
                 $("#json_display").html( html );
-                $("#json_data").html( JSON.stringify(data) );
+                $("#json_data").html( JSON.stringify(json) );
 
-                filter();
+                filter(json);
 			});
 
 		});
 
-        function filter(){
+        function filter(json){
             var config = {
-                property: "",
+                property: "name",
                 value: ""
             };
 
             alert(config);
 
-            var filteredJson = JSON.parse($.filterJSON(config, $('#json_data').html()) );
+
+            var filteredJson = $.filterJSON( config, json);
+            console.log(JSON.stringify(filteredJson));
+            if( filteredJson.length > 0 ){
+                filteredJson = JSON.parse(filteredJson);
+            }
             console.log(JSON.stringify(filteredJson));
             var html = "<ol>";
             $.each(filteredJson, function(key, val){
