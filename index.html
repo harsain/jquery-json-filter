@@ -1,0 +1,71 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>JSON Filter</title>
+	
+	<!-- <link href="style.css" rel="stylesheet" type="text/css"> -->
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript" src="json.filter.js"></script>
+	<script>
+		var $ = jQuery.noConflict();
+
+		$(document).ready(function(){
+			var jsonDataRequest = $.getJSON("./sample.json", function(data){
+				alert("SUCCESS: " + data.length + " ---- " + JSON.stringify(data) );
+			});
+			
+			jsonDataRequest.done( function(data){
+				alert("DONE: " + data.length + " ---- "  + JSON.stringify(data));
+
+
+                var html = "<ol>";
+                $.each(data, function(key, val){
+                    html += "<li><pre>" + JSON.stringify(data[key])+ "</pre></li>";
+                });
+                html += "</ol>";
+
+                $("#json_display").html( html );
+                $("#json_data").html( JSON.stringify(data) );
+
+                filter();
+			});
+
+		});
+
+        function filter(){
+            var config = {
+                property: "",
+                value: ""
+            };
+
+            alert(config);
+
+            var filteredJson = JSON.parse($.filterJSON(config, $('#json_data').html()) );
+            console.log(JSON.stringify(filteredJson));
+            var html = "<ol>";
+            $.each(filteredJson, function(key, val){
+                html += "<li><pre> Result: " + JSON.stringify(filteredJson[key] )+ "</pre></li>";
+            });
+            html += "</ol>";
+            $("#json_result").html( html );
+        }
+	</script>
+	
+</head>
+<body>
+	
+	<h1 id="">JSON Filtering</h1>
+
+    <div id="json_result">
+
+    </div>
+
+    <div id="json_display">
+
+    </div>
+    <div id="json_data">
+
+    </div>
+
+</body>
+</html>
