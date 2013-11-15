@@ -16,21 +16,84 @@
 			var ret = {result: [], err: ""};
 
 
+
+
             /*****************************/
             /*      Inner Functions      */
             /*****************************/
+
+            var level = 1;
+            var topLevelObject = {};
 
 			jsonFilterMain = function(config, json){
 
                 console.log("in jsonFilterMain");
                 console.log( "type of json " + $.type(json) );
-                $.each(json, function(key, val){
-                    console.log(JSON.stringify(json[key]) );
+                if($.type(json) === "array"){
+                    $.each(json, function(index, value){
+                       console.log("index: "+index+" -- value: "+value);
+                        if($.type(value) === "object"){
+                            topLevelObject = value;
+                            if(filterJsonByProperty(value) == 1) {
+                                console.log("property matched in: " + JSON.stringify(value));
+                                ret.result.push(value);
+                            }
+                        }
 
-                });
-
-
+                    });
+                }
+//                $.each(json, function(key, val){
+//                    console.log(JSON.stringify(json[key]) );
+//
+//                });
 			}
+
+            filterJsonByProperty = function(obj){
+                var response = 0;
+                console.log("Number of keys in obj: " + Object.keys(obj).length);
+                var noOfPropertiesInObj = Object.keys(obj).length;
+
+                if(noOfPropertiesInObj > 0 ){
+
+                    if(obj.hasOwnProperty(config.property)){
+
+                        if(config.value == "" && config.value.length <= 0){
+                            response = 1;
+                            //return false;
+                        } else {
+                            var propValue = obj[config.property];
+                            console.log("prop value: " + propValue);
+                            if(propValue === config.value && $.type(propValue) != "object"){
+                                console.log("Matched");
+                                response = 1;
+                                //return false;
+                            } else if($.type(propValue) === "object"){
+                                console.log("Matched");
+                                response = 1;
+                            }
+                        }
+
+                    } else{
+                        $.each(obj, function(key, value){
+                            console.log("key: "+key+" -- value type: "+ $.type(value));
+                            var terminate = 0;
+                            if($.type(value) === "object"){
+                                response = 0;
+                                console.log("type object found: " + JSON.stringify(value));
+                                if(filterJsonByProperty(value) == 1){
+                                    response = 1;
+                                    return false;
+                                }
+//                                if(config.property === key){
+//                                    console.log("key: "+key+" -- matched property: "+ config.property+ " --  for: " + JSON.stringify(obj));
+//                                    return false;
+//                                }
+                            }
+                        });
+                    }
+                }
+                return response;
+            }
 
             checkConfigs = function(){
                 var response = -1;
@@ -53,13 +116,6 @@
                     response = -1;
                 }
                 return response;
-            }
-
-            validateJSON = function(){
-                if(json && $.type(json) === "array"){
-                    console.log("json is an array");
-                    json = $.parseJSON(json);
-                }
             }
 
 
@@ -87,7 +143,6 @@
             var configCheckResult = checkConfigs();
 
             if(configCheckResult === 1) {
-                validateJSON();
 			    resultObject =  jsonFilterMain(config, json);
             } else if (configCheckResult === 0) {
                 ret.result  = json;

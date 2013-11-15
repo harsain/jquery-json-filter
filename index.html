@@ -11,11 +11,11 @@
 
 		$(document).ready(function(){
 			var jsonDataRequest = $.getJSON("./sample.json", function(data){
-				alert("SUCCESS: " + data.length + " ---- " + JSON.stringify(data) );
+				//alert("SUCCESS: " + data.length + " ---- " + JSON.stringify(data) );
 			});
 			
 			jsonDataRequest.done( function(data){
-				alert("DONE: " + data.length + " ---- "  + JSON.stringify(data));
+				//alert("DONE: " + data.length + " ---- "  + JSON.stringify(data));
 
                 var json = data;
                 var html = "<ol>";
@@ -34,25 +34,24 @@
 
         function filter(json){
             var config = {
-                property: "name",
-                value: ""
+                property: "language",
+                value: "YAML"
             };
-
-            alert(config);
-
 
             var filteredJson = $.filterJSON( config, json);
             console.log(JSON.stringify(filteredJson));
-            if( filteredJson.length > 0 ){
-                filteredJson = JSON.parse(filteredJson);
-            }
+//            if( filteredJson.length > 0 ){
+//                filteredJson = JSON.parse(filteredJson);
+//            }
             console.log(JSON.stringify(filteredJson));
             var html = "<ol>";
             $.each(filteredJson, function(key, val){
-                html += "<li><pre> Result: " + JSON.stringify(filteredJson[key] )+ "</pre></li>";
+                html += "<li><h2>Result:</h2><pre> <br/><h3>" + JSON.stringify(filteredJson[key] )+ "</h3></pre></li>";
             });
             html += "</ol>";
+            html += "<hr/>";
             $("#json_result").html( html );
+
         }
 	</script>
 	
