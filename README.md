@@ -1,6 +1,6 @@
 ----------
 
-Welcome to JSON Filter v0.4 !	{#welcome}
+JSON Filter v0.4 !
 =====================
 
 We all have been through a stage when we have a JSON and have to either filter it or search for a value. The only solution is writing multiple loops and if / else statements.
