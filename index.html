@@ -20,7 +20,7 @@
                 var json = data;
                 var html = "<ol>";
                 $.each(json, function(key, val){
-                    html += "<li><pre>" + JSON.stringify(json[key])+ "</pre></li>";
+                    html += "<li><pre><code>" + JSON.stringify(json[key])+ "</code></pre></li>";
                 });
                 html += "</ol>";
 
